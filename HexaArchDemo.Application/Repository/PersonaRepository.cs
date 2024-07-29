@@ -1,10 +1,30 @@
-﻿using HexaArchDemo.Domain.Models;
+﻿using HexaArchDemo.Domain.IRepository;
+using HexaArchDemo.Domain.Models;
+using HexaArchDemo.Infrastructure.Drivens.InternalBD.Ports;
 
 
 namespace HexaArchDemo.Application.Repository
 {
-    public interface IPersonaRepository
+    public class PersonaRepository: IPersonaRepository
     {
-        public List<DepartamentoModel> GetPersonaDepartamentoPar();
+        private readonly IPersonaPort _personaRepository;
+
+        public PersonaRepository(IPersonaPort personaRepository)
+        {
+            _personaRepository = personaRepository;
+        }
+        public List<DepartamentoModel> GetPersonaDepartamentoPar()
+        {
+            IEnumerable<DepartamentoModel> result = _personaRepository.GetAllDepartamentosAsync();
+            List<DepartamentoModel> resultData = result.Where(x => x.Id % 2 == 0).Select(x => new DepartamentoModel
+            {
+                Id = x.Id,
+                Nombre = x.Nombre,
+                ApellidoPersona = x.ApellidoPersona,
+                NombrePersona = x.NombrePersona,
+                IdJefe = x.IdJefe,
+            }).ToList();
+            return resultData;
+        }
     }
 }

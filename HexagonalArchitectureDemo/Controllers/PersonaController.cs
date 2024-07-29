@@ -1,6 +1,7 @@
 ﻿
 using HexaArchDemo.Infrastructure.Drivens.InternalBD.Models;
 using HexaArchDemo.Infrastructure.Drivers.Adapters;
+using HexaArchDemo.Infrastructure.Drivers.Ports;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,20 +12,19 @@ namespace HexaArchDemo.Controllers
     [ApiController]
     public class PersonaController : ControllerBase
     {
-        private readonly TestContext _context;
+        private readonly IPersonaDriverPort _personaDriverPort; 
 
-        public PersonaController(TestContext context)
+        public PersonaController(IPersonaDriverPort personaDriverPort)
         {
-            _context = context;
+            _personaDriverPort = personaDriverPort;
         }
 
         // GET  ALL PERSONAS
-        // GET: api/personas
+        // GET: api/persona
         [HttpGet]
         public IActionResult GetAll ()
         {
-            PersonaDriverAdapter personaConnect = new PersonaDriverAdapter(_context);
-            return Ok(personaConnect.GetPersonaDepartamentoPar());
+            return Ok(_personaDriverPort.GetPersonaDepartamentoPar());
         }
     }
 }
