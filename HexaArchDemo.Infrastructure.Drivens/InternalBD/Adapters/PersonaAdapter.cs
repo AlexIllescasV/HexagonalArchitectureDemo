@@ -1,6 +1,7 @@
 ﻿using HexaArchDemo.Domain.Models;
 using HexaArchDemo.Infrastructure.Drivens.InternalBD.Models;
 using HexaArchDemo.Infrastructure.Drivens.InternalBD.Ports;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace HexaArchDemo.Infrastructure.Drivens.InternalBD.Adapters
@@ -32,29 +33,29 @@ namespace HexaArchDemo.Infrastructure.Drivens.InternalBD.Adapters
          * Consulta inclusiva un left join
          * 
          */
-        public IEnumerable<DepartamentoModel> GetAllDepartamentosAsync()
+        public async Task<IEnumerable<DepartamentoModel>> GetAllDepartamentosAsync()
         {
-            IEnumerable<DepartamentoModel> list = (from d in _context.Personas
-                                                   join e in _context.Departamentos
-                                                   on d.Id equals e.IdJefe
-                                                   group new { d, e } by new
-                                                   {
-                                                       nombrePersona=d.Nombre,
-                                                       apellidoPersona=d.Apellido,
-                                                       idPersona=d.Id,
-                                                       nombreDepartamento=e.Nombre,
-                                                       idDepartamento=e.Id
-                                                   }
-                                                   into de
-                                                   //from depar in de.DefaultIfEmpty()
-                                                   select new DepartamentoModel
-                                                   {
-                                                       ApellidoPersona = de.Key.apellidoPersona,
-                                                       Id =de.Key.idDepartamento,
-                                                       IdJefe=de.Key.idPersona,
-                                                       Nombre=de.Key.nombreDepartamento,
-                                                       NombrePersona=de.Key.nombrePersona,
-                                                   }).ToList();
+            var list = await (from d in _context.Personas
+                              join e in _context.Departamentos
+                              on d.Id equals e.IdJefe
+                              group new { d, e } by new
+                              {
+                                  nombrePersona = d.Nombre,
+                                  apellidoPersona = d.Apellido,
+                                  idPersona = d.Id,
+                                  nombreDepartamento = e.Nombre,
+                                  idDepartamento = e.Id
+                              }
+                              into de
+                              //from depar in de.DefaultIfEmpty()
+                              select new DepartamentoModel
+                              {
+                                  ApellidoPersona = de.Key.apellidoPersona,
+                                  Id = de.Key.idDepartamento,
+                                  IdJefe = de.Key.idPersona,
+                                  Nombre = de.Key.nombreDepartamento,
+                                  NombrePersona = de.Key.nombrePersona,
+                              }).ToListAsync();
 
             // Envuelve la lista en un Task usando Task.FromResult
             return list;

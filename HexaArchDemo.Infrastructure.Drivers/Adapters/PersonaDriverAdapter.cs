@@ -1,5 +1,6 @@
-﻿using HexaArchDemo.Domain.Models;
-using HexaArchDemo.Domain.UseCase;
+﻿using HexaArchDemo.Application.Repository;
+using HexaArchDemo.Domain.IRepository;
+using HexaArchDemo.Domain.Models;
 using HexaArchDemo.Infrastructure.Drivens.InternalBD.Models;
 using HexaArchDemo.Infrastructure.Drivers.Models;
 using HexaArchDemo.Infrastructure.Drivers.Ports;
@@ -8,16 +9,15 @@ namespace HexaArchDemo.Infrastructure.Drivers.Adapters
 {
     public class PersonaDriverAdapter : IPersonaDriverPort
     {
-        private readonly TestContext _context;
+        private readonly IPersonaRepository _personaRepository;
 
-        public PersonaDriverAdapter(TestContext context)
+        public PersonaDriverAdapter(IPersonaRepository personaRepository)
         {
-            _context = context;
+            _personaRepository = personaRepository;
         }
-        public List<DepartamentoDriverModel> GetPersonaDepartamentoPar()
+        public async Task<List<DepartamentoDriverModel>> GetPersonaDepartamentoPar()
         {
-            PersonaUseCase personaUseCase = new PersonaUseCase(_context);
-            List<DepartamentoModel> resultUseCase = personaUseCase.GetPersonaDepartamentoPar();
+            var resultUseCase = await _personaRepository.GetPersonaDepartamentoPar();
             List<DepartamentoDriverModel> result = new List<DepartamentoDriverModel>();
             foreach (DepartamentoModel p in resultUseCase)
             {
