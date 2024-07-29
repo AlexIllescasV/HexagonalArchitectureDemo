@@ -9,6 +9,6 @@ namespace HexaArchDemo.Domain.IRepository
 {
     public interface IPersonaRepository
     {
-        public List<DepartamentoModel> GetPersonaDepartamentoPar();
+        public Task<List<DepartamentoModel>> GetPersonaDepartamentoPar();
     }
 }

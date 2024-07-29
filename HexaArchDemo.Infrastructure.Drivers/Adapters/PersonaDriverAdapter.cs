@@ -15,9 +15,9 @@ namespace HexaArchDemo.Infrastructure.Drivers.Adapters
         {
             _personaRepository = personaRepository;
         }
-        public List<DepartamentoDriverModel> GetPersonaDepartamentoPar()
+        public async Task<List<DepartamentoDriverModel>> GetPersonaDepartamentoPar()
         {
-            List<DepartamentoModel> resultUseCase = _personaRepository.GetPersonaDepartamentoPar();
+            var resultUseCase = await _personaRepository.GetPersonaDepartamentoPar();
             List<DepartamentoDriverModel> result = new List<DepartamentoDriverModel>();
             foreach (DepartamentoModel p in resultUseCase)
             {

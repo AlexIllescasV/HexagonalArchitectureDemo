@@ -13,9 +13,9 @@ namespace HexaArchDemo.Application.Repository
         {
             _personaRepository = personaRepository;
         }
-        public List<DepartamentoModel> GetPersonaDepartamentoPar()
+        public async Task<List<DepartamentoModel>> GetPersonaDepartamentoPar()
         {
-            IEnumerable<DepartamentoModel> result = _personaRepository.GetAllDepartamentosAsync();
+            var result = await _personaRepository.GetAllDepartamentosAsync();
             List<DepartamentoModel> resultData = result.Where(x => x.Id % 2 == 0).Select(x => new DepartamentoModel
             {
                 Id = x.Id,

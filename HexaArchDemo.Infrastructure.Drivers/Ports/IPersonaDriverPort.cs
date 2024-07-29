@@ -9,6 +9,6 @@ namespace HexaArchDemo.Infrastructure.Drivers.Ports
 {
     public interface IPersonaDriverPort
     {
-        public List<DepartamentoDriverModel> GetPersonaDepartamentoPar();
+        public Task<List<DepartamentoDriverModel>> GetPersonaDepartamentoPar();
     }
 }

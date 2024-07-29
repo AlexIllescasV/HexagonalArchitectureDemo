@@ -22,9 +22,10 @@ namespace HexaArchDemo.Controllers
         // GET  ALL PERSONAS
         // GET: api/persona
         [HttpGet]
-        public IActionResult GetAll ()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(_personaDriverPort.GetPersonaDepartamentoPar());
+            var result = await _personaDriverPort.GetPersonaDepartamentoPar();
+            return Ok(result);
         }
     }
 }
